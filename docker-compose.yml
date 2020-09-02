@@ -1,0 +1,16 @@
+version: "3"
+services:
+    mariadb:
+        image: mariadb:10.4.5-bionic
+        environment:
+            MYSQL_ROOT_PASSWORD: my-secret-pw
+        volumes:
+            - ./sqlseed:/docker-entrypoint-initdb.d
+        ports:
+            - 3306:3306
+    scheduler:
+        build: .
+        environment:
+            SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/scheduling
+        ports:
+            - 8080-8090:8080
